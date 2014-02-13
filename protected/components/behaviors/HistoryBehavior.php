@@ -1,6 +1,6 @@
 <?php
 
-class HistBehavior extends CActiveRecordBehavior
+class HistoryBehavior extends CActiveRecordBehavior
 {
 	public $fieldName;
 	

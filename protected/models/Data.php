@@ -25,7 +25,7 @@ class Data extends CActiveRecord
 			'DataBehavior' => array(
 				'class' => 'application.components.behaviors.DataBehavior',
 			),
-			'HistBehavior' => array(
+			'HistoryBehavior' => array(
 				'class' => 'application.components.behaviors.HistBehavior',
 				'fieldName' => 'priority'
 			)
