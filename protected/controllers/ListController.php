@@ -1,8 +1,14 @@
 <?php
 
+/**
+ * Контроллер списка дел
+ */
+
 class ListController extends Controller
 {
-	//отображает страницу списка дел
+	/**
+	 * отображает страницу списка дел, передает в js url'ы операций со списком
+	 */
 	public function actionIndex()
 	{
 		Yii::app()->getClientScript()->registerCoreScript('jquery.ui');
@@ -17,7 +23,9 @@ class ListController extends Controller
 		));
 	}
 	
-	//данные для списка
+	/**
+	 * отправляет в формате json данные для списка и данные истории
+	 */
 	public function actionData()
 	{
 		if (Yii::app()->request->isPostRequest) {
@@ -39,13 +47,6 @@ class ListController extends Controller
 			
 			if ($hist) {
 				$sql = 'select a.item_id as id, a.text from (select * from hist as h where h.status > 0 and step <= :step order by h.step desc) as a group by a.item_id order by a.priority asc';
-				/*$result['data'] = Yii::app()->db->createCommand()->
-					select('item_id as id, text')->
-					from(Hist::model()->tableName())->
-					where('step <= :step', array('step' => $step))->
-					group('item_id')->
-					order('id desc')->
-					queryAll();*/
 				$result['data'] = Yii::app()->db->createCommand($sql)->bindParam(':step', $step)->queryAll();
 			} else {
 				$result['data'] = Yii::app()->db->createCommand()->
@@ -61,8 +62,12 @@ class ListController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		}
 	}
-	
-	//добавление или обновление дел
+
+	/**
+	 * если в $_POST присутствует id, то обновляем существующую запись,
+	 * если нет, создаем новую
+	 * при успешной операции возвращает $res['result'] == 'success' и данные истории
+	 */
 	public function actionSave()
 	{
 		if (Yii::app()->request->isPostRequest) {
@@ -102,7 +107,9 @@ class ListController extends Controller
 		}
 	}
 	
-	//обновление порядка элементов
+	/**
+	 * принимает в $_POST новый порядок элементов и обновляет его в базе
+	 */
 	public function actionUpdate()
 	{
 		if (Yii::app()->request->isPostRequest) {
@@ -134,7 +141,9 @@ class ListController extends Controller
 		}
 	}
 	
-	//удаление элемента
+	/**
+	 * удаляет элемент по id (устанавливает status == 0)
+	 */
 	public function actionRemove()
 	{
 		if (Yii::app()->request->isPostRequest) {
@@ -162,7 +171,9 @@ class ListController extends Controller
 		}
 	}
 	
-	//возвращает следующий порядок элемента
+	/**
+	 * возвращает максимальный порядок элемента + 1
+	 */
 	public function getNextPriority()
 	{
 		$sql = 'select max(priority) as m from data where status = 1';
@@ -170,7 +181,9 @@ class ListController extends Controller
 		return $res['m'] + 1;
 	}
 	
-	//возвращает максимальный шаг в истории
+	/**
+	 * возвращает максимальный шаг в истории
+	 */
 	public function getMaxHistoryStep()
 	{
 		$sql = 'select max(step) as m from hist where status = 1';
@@ -178,7 +191,9 @@ class ListController extends Controller
 		return $res['m'];
 	}
 	
-	//возвращает минимальный шаг в истории
+	/**
+	 * возвращает минимальный шаг в истории
+	 */
 	public function getMinHistoryStep()
 	{
 		$sql = 'select min(step) as m from hist where status = 1';

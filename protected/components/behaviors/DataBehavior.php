@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Поведение для ведения истории списка дел (модель Data)
+ */
 class DataBehavior extends CActiveRecordBehavior
 {
+	/**
+	 * после сохранения записи, сохраняет ее копию в таблицу истории
+	 */
 	public function afterSave($event) {
 		$hist = new Hist();
 		$hist->item_id = $this->getOwner()->id;
@@ -12,6 +18,9 @@ class DataBehavior extends CActiveRecordBehavior
 		$hist->save();
 	}
 	
+	/**
+	 * возвращает максимальный шаг в истории + 1
+	 */
 	protected function getNextStep()
 	{
 		$sql = 'select max(step) as m from hist where status = 1';

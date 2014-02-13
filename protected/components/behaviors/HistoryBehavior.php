@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * Поведение для ведения и выдачи истории изменений поля, определенного в $fieldName
+ */
 class HistoryBehavior extends CActiveRecordBehavior
 {
 	public $fieldName;
 	
-	//получение истории, если $d == null то всю, если нет то по дате
+	/**
+	 * получение истории, если $d == null то всю, если нет то по дате
+	 */
 	public function getHist($d = null)
 	{
 		$sql = 'select field_val, record_time from behavior where model_name = :model and field_name = :field and item_id = :id';
@@ -21,6 +26,9 @@ class HistoryBehavior extends CActiveRecordBehavior
 		return $result->queryAll();
 	}
 	
+	/**
+	 * после сохранения записи, сохраняет в таблицу истории значение поля $fieldName если оно изменилось
+	 */
 	public function afterSave()
 	{
 		$item = Yii::app()->db->createCommand()->
