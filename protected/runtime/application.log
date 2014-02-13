@@ -950,3 +950,23 @@ REQUEST_URI=/index.php?r=list/update
 in /var/www/app/protected/components/behaviors/HistBehavior.php (38)
 in /var/www/app/protected/controllers/ListController.php (120)
 in /var/www/app/index.php (13)
+2014/02/13 21:24:49 [error] [exception.CException] exception 'CException' with message 'Alias "application.components.behaviors.HistBehavior" is invalid. Make sure it points to an existing PHP file and the file is readable.' in /var/www/framework/YiiBase.php:323
+Stack trace:
+#0 /var/www/framework/YiiBase.php(196): YiiBase::import('application.com...', true)
+#1 /var/www/framework/base/CComponent.php(329): YiiBase::createComponent(Array)
+#2 /var/www/framework/base/CComponent.php(298): CComponent->attachBehavior('HistoryBehavior', Array)
+#3 /var/www/framework/db/ar/CActiveRecord.php(396): CComponent->attachBehaviors(Array)
+#4 /var/www/app/protected/models/Data.php(76): CActiveRecord::model('Data')
+#5 /var/www/app/protected/controllers/ListController.php(54): Data::model()
+#6 /var/www/framework/web/actions/CInlineAction.php(49): ListController->actionData()
+#7 /var/www/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /var/www/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#9 /var/www/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 /var/www/framework/web/CWebApplication.php(282): CController->run('data')
+#11 /var/www/framework/web/CWebApplication.php(141): CWebApplication->runController('list/data')
+#12 /var/www/framework/base/CApplication.php(184): CWebApplication->processRequest()
+#13 /var/www/app/index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php?r=list/data
+HTTP_REFERER=http://app.my/index.php?r=list/index
+---
